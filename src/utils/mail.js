@@ -17,21 +17,21 @@ const sendMail= async (options) => {
 
 
     const transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
+        host: process.env.MAILTRAP_HOST,
+        port: process.env.MAILTRAP_PORT,
         secure: false, // true for 465, false for other ports
         auth: {
-            user: "maddison53@ethereal.email",
-            pass: "jn7jnAPss4f63QBp6D",
+            user: MAILTRAP_USERNAME,
+            pass: MAILTRAP_PASSWORD,
         },
     });
 
 
     const mail= {
-        from: "mail.taskmanager@example.com", // We can name this anything. The mail will go to your Mailtrap inbox
+        from: process.env.MAILTRAP_SENDERMAIL,
         to: options.email, // receiver's mail
         subject: options.subject, // mail subject
-        text: emailTextual, // mailgen content textual variant
+        text: emailText, // mailgen content textual variant
         html: emailHtml, // mailgen content html variant
     }
 
@@ -49,6 +49,7 @@ const sendMail= async (options) => {
 }
 
 
+// email content
 const emailVerificationMailgenContent= (username, verficationUrl) =>{
     return {
         body: {
@@ -71,7 +72,7 @@ const forgotPasswordMailgenContent= (username, passwordResetUrl) =>{
     return {
         body: {
             name: username,
-            intro: 'We got request to reset the password of your account',
+            intro: 'We got a request to reset the password for your account',
             action: {
                 instructions: 'To reset password, click on the following button',
                 button: {
