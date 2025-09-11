@@ -9,6 +9,7 @@ dotenv.config({
 
 const PORT= process.env.PORT || 8000
 
+// async fn that returns Promise --> resolve (.then()) or reject (.catch())
 connectDB()
     .then(()=>{
         app.listen(PORT, ()=>{
@@ -18,5 +19,8 @@ connectDB()
     })
     .catch(()=> {
         console.error("monogodb connection failed" , error)
+
+        // to stop nodejs proces, if db not connected
+        // dont want server to keep running w/o db
         process.exit(1)
     })
