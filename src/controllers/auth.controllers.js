@@ -2,6 +2,7 @@ import { body } from "express-validator";
 import { asyncHandler } from "../utils/async-handler.js";
 import { userRegistrationValidator } from "../validators/index.js";
 import {User} from "../models/user.models.js"
+import { ApiErrors } from "../utils/api-errors.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   // get data
@@ -14,8 +15,19 @@ const registerUser = asyncHandler(async (req, res) => {
   const existingUser= await User.findOne({email})
 
   if(existingUser){
-    
+    throw new ApiErrors (409, "user already exists", [])
   }
+
+  User.create({
+    email,
+    password,
+    username,
+    isEmailVerified: false,
+  })
+
+
+
+
 });
 
 
